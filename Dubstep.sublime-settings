@@ -10,6 +10,7 @@
 			"commands": [
 				{
 					"type": "ssh",
+					"description": "Git pull",
 					"run": "sleep 10 && git pull"
 				}
 			]
@@ -19,6 +20,7 @@
 			"commands": [
 				{
 					"type": "ssh",
+					"description": "Cheking out branch in remote",
 					"run": "git checkout . && sleep 10 && git checkout ##GIT_BRANCH##"
 				}
 			]

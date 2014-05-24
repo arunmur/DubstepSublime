@@ -72,6 +72,9 @@ class DubstepRunThread(threading.Thread):
 		err = tempfile.NamedTemporaryFile(delete=True)
 		try:
 			for command in self.commands:
+				if 'description' in command:
+					sublime.status_message("Running : " + command['description'])
+
 				if  'type' not in command:
 					sublime.error_message("type for command not priovided")
 					return
