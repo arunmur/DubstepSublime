@@ -5,6 +5,15 @@ import os
 import tempfile
 import re
 
+class RepoAutoUpdateCommand(sublime_plugin.EventListener):
+	def on_window_command(self, window, command_name, args):
+		auto_update_triggers = sublime.load_settings('Dubstep.sublime-settings').get('repo_autoupdate')
+		if auto_update_triggers  is None or not isinstance(auto_update_triggers, list):
+			return
+
+		for trigger in auto_update_triggers:
+			if command_name == trigger['on_command']:
+				window.active_view().run_command('dubstep_run', trigger['commands'])
 
 class DubstepRunCommand(sublime_plugin.TextCommand):
 	def run(self, edit, commands=None,output_to_view=None,output_to_dialog=None):

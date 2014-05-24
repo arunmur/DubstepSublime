@@ -2,7 +2,26 @@
 	"remote": {
 		"host" : "arun.devbin.io",
 		"user" : "root",
-		"home": "/home/git/bom"
+		"home": "/my/app/root"
 	},
-	
+	"repo_autoupdate":  [
+		{
+			"on_command" : "git_push_current_branch",
+			"commands": [
+				{
+					"type": "ssh",
+					"run": "sleep 10 && git pull"
+				}
+			]
+		},
+		{
+			"on_command" : "git_checkout_branch",
+			"commands": [
+				{
+					"type": "ssh",
+					"run": "git checkout . && sleep 10 && git checkout ##GIT_BRANCH##"
+				}
+			]
+		}
+	]
 }
