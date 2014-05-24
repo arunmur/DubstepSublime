@@ -9,7 +9,7 @@
 				"description": "Restarting Apache",
 				"run": "service apache restart"
 			}
-		]		
+		]
 	}
 }
 ]
