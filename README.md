@@ -38,7 +38,8 @@ Create a file 'Dubstep.sublime-settings' in your sublime User directory.
   "remote" : {
     "host": "<hostname of your devbox(fqdn)>",
     "user": "<Which user to connect with>",
-    "port": "<specify if you use a custom port for sshd>"
+    "port": "<specify if you use a custom port for sshd>",
+    "home": "<directory where the code is in remote machine>"
   },
 }
 ```
@@ -48,9 +49,10 @@ Create a file 'Dubstep.sublime-settings' in your sublime User directory.
 ```JSON
 {	
 	"remote": {
-    "host": "<hostname of your devbox(fqdn)>",
-    "user": "<Which user to connect with>",
-    "port": "<specify if you use a custom port for sshd>"
+        "host": "<hostname of your devbox(fqdn)>",
+        "user": "<Which user to connect with>",
+        "port": "<specify if you use a custom port for sshd>",
+        "home": "<directory where the code is in remote machine>"
 	},
 	"autoupdate":  [
 		{
@@ -77,8 +79,15 @@ Create a file 'Dubstep.sublime-settings' in your sublime User directory.
 }
 
 ```
-<h3>Customisations</h3>
-The center of the package/module is the <b>dubstep_run</b> command. You can run create a file called 'Dubstep.sublime-commands' on your sublime's User directory to create custom commands. You can see the file provided for a sample.
+<h2>Customisations</h2>
+All customisations using this package can be performed with three types of files
+<ul>
+<li>settings - Dubstep.sublime-settings file(in sublime User directory)</li>
+<li>commands - Dubste.sublime-commands file(in sublime User directory)</li>
+<li>sublime python modules</li>
+</ul>
+
+The center of the DubstepSublime package/module is the <b>dubstep_run</b> command. To create custom commands, create a file called 'Dubstep.sublime-commands' on your sublime's User directory. 
 
 Every command has the following structure.
 
@@ -91,7 +100,7 @@ Every command has the following structure.
 			{
 				"type": "<ssh|scp>",
 				"description": "<Some description>",
-				"run": "<command to run on the devbox>"
+				"run": "<command to run on the remote>"
 			}
 		],
 		"output_to_view": {
@@ -100,8 +109,14 @@ Every command has the following structure.
 	}
 }
 ```
+See 'Dubstep.sublime-commands' provided in the repository for examples. The args provided to dubstep_run has two parts
+<ul>
+<li>command - what to run</li>
+<li>output - what to do with the output of the command</li>
+</ul>
 
-<b>Commands: </b>The dubstep_run command takes an array of comands, run in sequence. <br />
+<h3>Commands: </h3>
+The dubstep_run command takes an array of comands, run in sequence.
 
 <b>ssh command</b>
 ```JSON
@@ -117,7 +132,7 @@ Every command has the following structure.
   }
 }
 ```
-This runs 'ls /var/reports/Generated' on your development machine.
+This runs 'ls /var/reports/Generated' on the remote machine.
 
 <b>scp command</b>
 ```JSON
@@ -135,15 +150,11 @@ This runs 'ls /var/reports/Generated' on your development machine.
 }
 ```
 
-This copies /tmp/in.csv from your laptop to development machine.
+This copies /tmp/in.csv from your laptop to remote machine.
 
-<b>Placeholders</b>There are a few place holders available, for the 'run' or 'file' argument in the command.
-<table>
-<tr><td>##FILE##</td><td>represents the current file</td></tr>
-<tr><td>##GIT_BRANCH##</td><td>represents the current git branch</td></tr>
-</table>
 
-<b>Output</b> When no option is provided, output is ignored. Error messages always come on a popup. But output of your set of commands can be captured and displayed to the user
+<h3>Output</h3>
+When no option is provided, output is ignored. Error messages always come on a popup. But output of your set of commands can be captured and displayed to the user
 
 <table>
 <tr><td>output_to_view</td><td>A temporary view will be opened to display the output of the command. optionally syntax_file for the output can be sepecified</td></tr>
@@ -177,8 +188,43 @@ This copies /tmp/in.csv from your laptop to development machine.
 }
 ```
 
-<b>autoupdate customisation</b>
-The autoupdate command provided in Dubstep.sublime-settings file is used to run a command on trigger of another sublime window command. We use this to keep our git always upto date on our devbox. There are two parts to these commands. the trigger 'on_command' and 'commands', which is  a debstep_run command. To find the sublime command on which you want to run somethinng, on the sublime's console type 
+<h3>Placeholders</h3>
+There are a few bulit-in place holders available, for the 'run' or 'file' argument in the command.
+<table>
+<tr><td>##FILE##</td><td>represents the current file</td></tr>
+<tr><td>##FILE_IN_REMOTE##</td><td>represents the current file in remote machine(home should be specified in settings file)</td></tr>
+</table>
+
+More custom place holders can be provided in the <font color="blue">Dubstep.sublime-settings</font> file. Placeholders will run a command in your laptop/desktop and send it as an argument to the remote.
+
+```JSON
+{
+...
+  "placeholders" : [
+    {"BRANCH" : "git rev-parse --abbrev-ref HEAD"},
+    {"HOSTNAME" : "hostname -f"}
+  ]
+}
+```
+
+now, comand
+
+```JSON
+{
+...
+  "commands": [
+    {
+      "type" : "ssh"
+      "run" : "git checkout ##BRANCH##"
+
+  }
+  ]
+}
+```
+will run as "git checkout master" on the remote machine, assuming you have checkout master on sublime.
+
+<h3>autoupdate customisation</h3>
+The autoupdate command provided in <font color="blue">Dubstep.sublime-settings</font> file is used to run a command on trigger of another sublime window command. We use this to keep our git always upto date on our devbox. There are two parts to these commands. the trigger 'on_command' and 'commands', which is  a debstep_run command. To find the sublime command on which you want to run somethinng, on the sublime's console type 
 
 ```
 sublime.log_commands(True)
@@ -200,3 +246,9 @@ It will show all the commands as you use sublime. When you find your command you
 ```
 
 The commands here follow the same structure as commands in the sublime-commands file.
+
+<h3>Sublime Python Modules</h3>
+Writing Sublime Python Modules is out of scope of this package. To read how to write one see below
+http://code.tutsplus.com/tutorials/how-to-create-a-sublime-text-2-plugin--net-22685
+
+However if you knew how to write the modeule, then dubstep_run command with all the above features is available to be called from the module. The dubstep_run will always run as a seperate thread.
