@@ -1,0 +1,15 @@
+[
+{
+	"caption": "Devbox: Restart Apache",
+	"command": "dubstep_run",
+	"args" : {
+		"commands": [
+			{
+				"type": "ssh",
+				"description": "Restarting Apache",
+				"run": "service apache restart"
+			}
+		]		
+	}
+}
+]
