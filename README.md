@@ -195,7 +195,7 @@ There are a few bulit-in place holders available, for the 'run' or 'file' argume
 <tr><td>##FILE_IN_REMOTE##</td><td>represents the current file in remote machine(home should be specified in settings file)</td></tr>
 </table>
 
-More custom place holders can be provided in the <font color="blue">Dubstep.sublime-settings</font> file. Placeholders will run a command in your laptop/desktop and send it as an argument to the remote.
+More custom place holders can be provided in the <b>Dubstep.sublime-settings</b> file. Placeholders will run a command in your laptop/desktop and send it as an argument to the remote.
 
 ```JSON
 {
@@ -207,7 +207,7 @@ More custom place holders can be provided in the <font color="blue">Dubstep.subl
 }
 ```
 
-now, comand
+now, the command
 
 ```JSON
 {
@@ -223,8 +223,8 @@ now, comand
 ```
 will run as "git checkout master" on the remote machine, assuming you have checkout master on sublime.
 
-<h3>autoupdate customisation</h3>
-The autoupdate command provided in <font color="blue">Dubstep.sublime-settings</font> file is used to run a command on trigger of another sublime window command. We use this to keep our git always upto date on our devbox. There are two parts to these commands. the trigger 'on_command' and 'commands', which is  a debstep_run command. To find the sublime command on which you want to run somethinng, on the sublime's console type 
+<h3>Autoupdate</h3>
+The autoupdate command provided in <b>Dubstep.sublime-settings</b> file is used to run a command on trigger of another sublime window command. We use this to keep our git always upto date on our devbox. There are two parts to these commands. the trigger 'on_command' and 'commands', which is  a debstep_run command. To find the sublime command on which you want to run somethinng, on the sublime's console type 
 
 ```
 sublime.log_commands(True)
