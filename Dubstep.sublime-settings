@@ -1,6 +1,6 @@
 {	
 	"remote": {
-		"host" : "arun.devbin.io",
+		"host" : "devbox",
 		"user" : "root",
 		"home": "/my/app/root"
 	},
