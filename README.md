@@ -94,8 +94,8 @@ Every command has the following structure.
 				"run": "<command to run on the devbox>"
 			}
 		],
-		output_to_view: {
-		  syntax_file: "<path to syntax file>"
+		"output_to_view": {
+		  "syntax_file": "<path to syntax file>"
 		}
 	}
 }
