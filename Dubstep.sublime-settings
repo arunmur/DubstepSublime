@@ -4,7 +4,7 @@
 		"user" : "root",
 		"home": "/my/app/root"
 	},
-	"repo_autoupdate":  [
+	"autoupdate":  [
 		{
 			"on_command" : "git_push_current_branch",
 			"commands": [

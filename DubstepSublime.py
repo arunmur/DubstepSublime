@@ -5,9 +5,9 @@ import os
 import tempfile
 import re
 
-class RepoAutoUpdateCommand(sublime_plugin.EventListener):
+class AutoUpdateCommand(sublime_plugin.EventListener):
 	def on_window_command(self, window, command_name, args):
-		auto_update_triggers = sublime.load_settings('Dubstep.sublime-settings').get('repo_autoupdate')
+		auto_update_triggers = sublime.load_settings('Dubstep.sublime-settings').get('autoupdate')
 		if auto_update_triggers  is None or not isinstance(auto_update_triggers, list):
 			return
 
@@ -138,4 +138,4 @@ class DubstepRunThread(threading.Thread):
 		scp_command = "ssh"
 		if  'port'  in self.settings:
 			scp_command += " -P " + self.settings['port']
-		return scp_command + " " + filename + " " + self.settings['user'] + '@' + self.settings['host'] + self.replace_placehoders(command) 	
+		return scp_command + " " + filename + " " + self.settings['user'] + '@' + self.settings['host'] + self.replace_placehoders(filename) 	

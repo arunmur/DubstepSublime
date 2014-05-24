@@ -52,7 +52,7 @@ Create a file 'Dubstep.sublime-settings' in your sublime User directory.
     "user": "<Which user to connect with>",
     "port": "<specify if you use a custom port for sshd>"
 	},
-	"repo_autoupdate":  [
+	"autoupdate":  [
 		{
 			"on_command" : "git_push_current_branch",
 			"commands": [
@@ -177,8 +177,8 @@ This copies /tmp/in.csv from your laptop to development machine.
 }
 ```
 
-<b>repo_autoupdate customisation</b>
-The repo_autoupdate command provided in Dubstep.sublime-settings file can also be customised. There are two parts to those commands, 'on_command' run something. To find the sublime command on which you want to run somethinng, on the sublime's console type 
+<b>autoupdate customisation</b>
+The autoupdate command provided in Dubstep.sublime-settings file is used to run a command on trigger of another sublime window command. We use this to keep our git always upto date on our devbox. There are two parts to these commands. the trigger 'on_command' and 'commands', which is  a debstep_run command. To find the sublime command on which you want to run somethinng, on the sublime's console type 
 
 ```
 sublime.log_commands(True)
@@ -188,7 +188,7 @@ It will show all the commands as you use sublime. When you find your command you
 ```JSON
 {
   ...
-  "repo_autoupdate": [
+  "autoupdate": [
     {
       "on_command": "<the command you found>",
       "commands" [
@@ -199,4 +199,4 @@ It will show all the commands as you use sublime. When you find your command you
 }
 ```
 
-The commands here follow the same structure as command described above.
+The commands here follow the same structure as commands in the sublime-commands file.
