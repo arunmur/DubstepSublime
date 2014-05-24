@@ -16,22 +16,30 @@ class RepoAutoUpdateCommand(sublime_plugin.EventListener):
 				window.active_view().run_command('dubstep_run', trigger['commands'])
 
 class DubstepRunCommand(sublime_plugin.TextCommand):
-	def run(self, edit, commands=None,output_to_view=None,output_to_dialog=None):
+	def run(self, edit, name=None, commands=None,output_to_view=None,output_to_dialog=None):
+		self.commands = commands
+		self.output_to_view = output_to_view	
+		self.output_to_dialog = output_to_dialog
+		self.name = name
+
 		if commands is not None:
-			self.commands = commands
-			self.output_to_view = output_to_view	
-			self.output_to_dialog = output_to_dialog
 			th = DubstepRunThread(commands=commands, on_failure=self.run_failed, on_success=self.run_success)
 			th.start()
 
 	def run_failed(self, message):
-		sublime.error_message("Failed to run command: \n" +  message)
+		if self.name is not None:
+			sublime.error_message("Failed to run command(" + self.name + "): \n" +  message)
+		else:
+			sublime.error_message("Failed to run command: \n" +  message)
 
 	def run_success(self, message):
 		if self.output_to_view is not None:
 			view = sublime.active_window().new_file()
 			view.set_scratch(True)
-			view.set_name("**ssh-run**" )
+			if(self.name):
+				view.set_name("**dubstep-run**#" + self.name)
+			else:
+				view.set_name("**dubstep-run**" )
 			view.run_command('append', {'characters':message})
 			if isinstance(self.output_to_view, dict) and 'syntax_file' in self.output_to_view:
 				view.set_syntax_file(self.output['syntax_file'])
